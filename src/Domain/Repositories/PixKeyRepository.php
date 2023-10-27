@@ -27,6 +27,7 @@ class PixKeyRepository implements PixKeyRepositoryInterface
             $dataDomainPix = Arr::except($model->toArray(), [
                 'account_id',
             ]);
+
             $data = [
                 'kind' => EnumPixType::from($model->kind),
                 'account' => DomainAccount::make($model->account->toArray()),

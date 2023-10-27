@@ -23,7 +23,10 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     public function create(DomainTransaction $entity): ?DomainTransaction
     {
-        if ($this->model->create($entity->toArray())) {
+        $data = [
+            'account_id' => $entity->account->id(),
+        ];
+        if ($this->model->create($data + $entity->toArray())) {
             return $entity;
         }
 

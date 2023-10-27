@@ -14,4 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('pix', [Api\PixKeyController::class, 'store']);
+Route::name('api.')->group(function(){
+    Route::post('pix', [Api\PixKeyController::class, 'store'])->name('pix.store');
+    Route::post('transaction', [Api\TransactionController::class, 'store'])->name('transaction.store');
+});

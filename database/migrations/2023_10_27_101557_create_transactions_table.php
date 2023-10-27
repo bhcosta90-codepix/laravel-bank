@@ -16,8 +16,9 @@ return new class extends Migration {
             $table->string('status');
             $table->string('cancel_description')->nullable();
             $table->string('description');
-            $table->uuid('reference')->index();
+            $table->uuid('reference')->nullable()->index();
             $table->unsignedFloat('value');
+            $table->unsignedTinyInteger('type');
             $table->string('kind');
             $table->string('key');
             $table->timestamps();

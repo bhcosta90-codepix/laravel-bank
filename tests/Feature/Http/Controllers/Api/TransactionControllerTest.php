@@ -5,21 +5,24 @@ declare(strict_types=1);
 use App\Models\Account;
 use App\Models\PixKey;
 
+use App\Models\Transaction;
+
 use function Pest\Laravel\postJson;
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertNotEquals;
 
 beforeEach(function(){
     $this->account = Account::factory()->create();
 
     $this->defaults = [
         'account' => $this->account->id,
+        'value' => 50,
+        'description' => 'testing',
     ];
 });
 
-describe("PixKeyController Feature Test", function () {
+describe("TransactionController Feature Test", function(){
     test("creating a multiple pix", function ($data) {
-        $response = postJson(route('api.pix.store'), $data + $this->defaults)->assertJsonStructure([
+        $response = postJson(route('api.transaction.store'), $data + $this->defaults)->assertJsonStructure([
             'data' => [
                 'account' => [
                     'balance',
@@ -35,73 +38,55 @@ describe("PixKeyController Feature Test", function () {
                 'updated_at',
             ],
         ]);
-        expect(true)->toBeDatabaseResponse($response, PixKey::class, ['account']);
+
+        expect(true)->toBeDatabaseResponse($response, Transaction::class, ['account']);
         assertEquals((string) $this->account->id, $response->json('data.account.id'));
     })->with([
         [['key' => 'test@test.com', 'kind' => 'email']],
         [['key' => '(19) 98870-9090', 'kind' => 'phone']],
-        [['kind' => 'id']],
+        [['kind' => 'id', 'key' => (string) str()->uuid()]],
         [['key' => '84.209.990/0001-62', 'kind' => 'document']],
     ]);
 
-    test("registering a pix passing the kind id with a defined value", function () {
-        $data = ['kind' => 'id', 'key' => 'testing'];
-        $response = postJson(route('api.pix.store'), $data + $this->defaults);
-        assertNotEquals('testing', $response->json('data.key'));
-        expect(true)->toBeDatabaseResponse($response, PixKey::class, ['account']);
-    });
-
-    test("creating a new pix but it already exists in our database", function () {
-        PixKey::factory()->create(
-            $pix = [
-                'kind' => 'email',
-                'key' => 'test@test.com',
-            ]
-        );
-
-        postJson(route('api.pix.store'), $this->defaults + $pix)->assertStatus(422)->assertJsonStructure([
-            'message',
-            'errors',
-        ])->assertJson([
-            'message' => __('This pix is already registered in our database'),
-            'errors' => [
-                [
-                    __('This pix is already registered in our database'),
-                ],
-            ],
-        ]);
-    });
-
     describe("validation fields", function() {
         test("validating required fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson(route('api.transaction.store'), $data);
             foreach ($fields as $field) {
-                expect(__('validation.required', ['attribute' => $field]))->toBeValidateResponse($response, $field);
+                expect(__('validation.required', ['attribute' => __($field)]))->toBeValidateResponse($response, $field);
             }
         })->with([
-            [[], ['account', 'kind']],
+            [[], ['value', 'account', 'kind', 'key']],
+        ]);
+
+        test("validating numeric fields", function ($data, $fields) {
+            $response = postJson(route('api.transaction.store'), $data);
+            foreach ($fields as $field) {
+                expect(__('validation.numeric', ['attribute' => $field]))->toBeValidateResponse($response, $field);
+            }
+        })->with([
+            [['value' => 'a'], ['value']],
+        ]);
+
+        test("validating numeric with min fields", function ($data, $fields, float $min) {
+            $response = postJson(route('api.transaction.store'), $data);
+            foreach ($fields as $field) {
+                expect(__('validation.min.numeric', ['attribute' => $field, 'min' => $min]))->toBeValidateResponse($response, $field);
+            }
+        })->with([
+            [['value' => -1], ['value'], 0.01],
         ]);
 
         test("validating uuid fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson(route('api.transaction.store'), $data);
             foreach ($fields as $field) {
                 expect(__('validation.uuid', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
         })->with([
-            [['account' => 'testing'], ['account']],
-        ]);
-
-        test("validating exists fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
-            foreach ($fields as $field) {
-                expect(__('validation.exists', ['attribute' => $field]))->toBeValidateResponse($response, $field);
-            }
-        })->with([
-            [['account' => (string) str()->uuid()], ['account']],
+            [['kind' => 'id', 'key' => 'testing'], ['key']],
         ]);
 
         test("validating email fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson(route('api.transaction.store'), $data);
             foreach ($fields as $field) {
                 expect(__('validation.email', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
@@ -110,7 +95,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating phone fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson(route('api.transaction.store'), $data);
             foreach ($fields as $field) {
                 expect('O campo key não é um celular com DDD válido.')->toBeValidateResponse($response, $field);
             }
@@ -119,7 +104,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating document fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson(route('api.transaction.store'), $data);
             foreach ($fields as $field) {
                 expect('O campo key não é um CPF ou CNPJ válido.')->toBeValidateResponse($response, $field);
             }
@@ -128,7 +113,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating enum fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson(route('api.transaction.store'), $data);
             foreach ($fields as $field) {
                 expect(__('validation.enum', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }

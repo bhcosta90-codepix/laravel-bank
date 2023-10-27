@@ -16,7 +16,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'id',
-        'bank',
+        'account_id',
         'status',
         'cancel_description',
         'description',
@@ -24,5 +24,6 @@ class Transaction extends Model
         'value',
         'kind',
         'key',
+        'type',
     ];
 }
