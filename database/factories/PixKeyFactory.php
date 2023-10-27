@@ -19,6 +19,8 @@ class PixKeyFactory extends Factory
     {
         return [
             'account_id' => Account::factory(),
+            'kind' => 'id',
+            'key' => str()->uuid(),
         ];
     }
 }

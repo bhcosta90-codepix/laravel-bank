@@ -6,9 +6,11 @@ namespace Bank\Domain\Repositories;
 
 use App\Models\Transaction;
 use CodePix\Bank\Application\Repository\TransactionRepositoryInterface;
+use CodePix\Bank\Domain\DomainAccount;
 use CodePix\Bank\Domain\DomainTransaction;
 use CodePix\Bank\Domain\Enum\EnumPixType;
 use CodePix\Bank\Domain\Enum\EnumTransactionStatus;
+use CodePix\Bank\Domain\Enum\EnumTransactionType;
 use Illuminate\Support\Arr;
 
 class TransactionRepository implements TransactionRepositoryInterface
@@ -53,10 +55,15 @@ class TransactionRepository implements TransactionRepositoryInterface
     {
         if ($model) {
             $data = [
+                'account' => DomainAccount::make($model->account->toArray()),
                 'kind' => EnumPixType::from($model->kind),
                 'status' => EnumTransactionStatus::from($model->status),
+                'type' => EnumTransactionType::from($model->type),
             ];
-            return DomainTransaction::make($data + $model->toArray());
+
+            $dataTransaction = Arr::except($model->toArray(), ['account_id']);
+
+            return DomainTransaction::make($data + $dataTransaction);
         }
 
         return null;

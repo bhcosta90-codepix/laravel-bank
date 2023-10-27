@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 use App\Models\Account;
 use App\Models\PixKey;
-
 use App\Models\Transaction;
+use CodePix\Bank\Application\Repository\TransactionRepositoryInterface;
+use CodePix\Bank\Domain\Events\EventTransactionCreating;
+use CodePix\Bank\Domain\Events\EventTransactionError;
+use Illuminate\Support\Facades\Event;
 
 use function Pest\Laravel\postJson;
 use function PHPUnit\Framework\assertEquals;
@@ -22,6 +25,8 @@ beforeEach(function(){
 
 describe("TransactionController Feature Test", function(){
     test("creating a multiple pix", function ($data) {
+        Event::fake();
+
         $response = postJson(route('api.transaction.store'), $data + $this->defaults)->assertJsonStructure([
             'data' => [
                 'account' => [
@@ -41,12 +46,39 @@ describe("TransactionController Feature Test", function(){
 
         expect(true)->toBeDatabaseResponse($response, Transaction::class, ['account']);
         assertEquals((string) $this->account->id, $response->json('data.account.id'));
+
+        $id = $response->json('data.id');
+        Event::assertDispatched(EventTransactionCreating::class, function ($event) use ($id) {
+            return $event->payload()['id'] == app(TransactionRepositoryInterface::class)->find($id)->id();
+        });
+        Event::assertNotDispatched(EventTransactionError::class);
     })->with([
         [['key' => 'test@test.com', 'kind' => 'email']],
         [['key' => '(19) 98870-9090', 'kind' => 'phone']],
         [['kind' => 'id', 'key' => (string) str()->uuid()]],
         [['key' => '84.209.990/0001-62', 'kind' => 'document']],
     ]);
+
+    test("registering a transaction for the same account", function () {
+        Event::fake();
+
+        $pix = PixKey::factory()->create(['account_id' => $this->account->id]);
+
+        $data = [
+            'kind' => $pix->kind,
+            'key' => $pix->key,
+        ];
+        $response = postJson(route('api.transaction.store'), $data + $this->defaults);
+        expect(true)->toBeDatabaseResponse($response, Transaction::class, ['account']);
+        assertEquals("error", $response->json('data.status'));
+        assertEquals("You cannot transfer to your own account", $response->json('data.cancel_description'));
+
+        $id = $response->json('data.id');
+        Event::assertDispatched(EventTransactionError::class, function ($event) use ($id) {
+            return $event->payload()['id'] == app(TransactionRepositoryInterface::class)->find($id)->id();
+        });
+        Event::assertNotDispatched(EventTransactionCreating::class);
+    });
 
     describe("validation fields", function() {
         test("validating required fields", function ($data, $fields) {
