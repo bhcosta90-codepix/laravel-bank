@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Account extends Model
 {
@@ -14,4 +15,9 @@ class Account extends Model
         'name',
         'balance',
     ];
+
+    public function pix(): HasMany
+    {
+        return $this->hasMany(PixKey::class);
+    }
 }

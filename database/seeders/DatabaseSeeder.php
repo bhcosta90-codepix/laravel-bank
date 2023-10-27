@@ -20,6 +20,6 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        Account::factory()->create(['id' => "65b1e7a5-9f03-4e5f-8a50-9aebb21013dd"]);
+        $acount = Account::factory()->create(['id' => "65b1e7a5-9f03-4e5f-8a50-9aebb21013dd"])->hasPix();
     }
 }
