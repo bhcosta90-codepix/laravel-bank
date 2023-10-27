@@ -17,7 +17,8 @@ class AccountFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'id' => str()->uuid(),
+            'name' => $this->faker->name(),
         ];
     }
 }

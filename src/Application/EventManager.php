@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace System\Application;
+namespace Bank\Application;
 
 use BRCas\CA\Contracts\Event\EventManagerInterface;
 

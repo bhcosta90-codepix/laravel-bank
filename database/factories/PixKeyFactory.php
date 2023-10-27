@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Account;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class PixKeyFactory extends Factory
     public function definition(): array
     {
         return [
-            'bank' => str()->uuid(),
+            'account_id' => Account::factory(),
         ];
     }
 }

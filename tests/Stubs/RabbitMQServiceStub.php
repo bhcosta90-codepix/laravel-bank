@@ -9,7 +9,7 @@ use App\Services\Contracts\RabbitMQInterface;
 use Closure;
 use Illuminate\Support\Facades\Log;
 
-class RabbitMQStub implements AMQPInterface, RabbitMQInterface
+class RabbitMQServiceStub implements AMQPInterface, RabbitMQInterface
 {
     public function __construct(protected array|string $data = [])
     {

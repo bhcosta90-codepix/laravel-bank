@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use CodePix\System\Application\Repository\PixKeyRepositoryInterface;
-use CodePix\System\Application\Repository\TransactionRepositoryInterface;
+use Bank\Domain\Repositories\AccountRepository;
+use CodePix\Bank\Application\Repository\AccountRepositoryInterface;
+use CodePix\Bank\Application\Repository\PixKeyRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
-use System\Domain\Repositories\PixKeyRepository;
-use System\Domain\Repositories\TransactionRepository;
+use Bank\Domain\Repositories\PixKeyRepository;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -15,8 +15,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->singleton(AccountRepositoryInterface::class, AccountRepository::class);
         $this->app->singleton(PixKeyRepositoryInterface::class, PixKeyRepository::class);
-        $this->app->singleton(TransactionRepositoryInterface::class, TransactionRepository::class);
     }
 
     /**

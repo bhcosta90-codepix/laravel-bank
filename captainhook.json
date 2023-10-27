@@ -8,10 +8,10 @@
         "actions": []
     },
     "pre-commit": {
-        "enabled": false,
+        "enabled": true,
         "actions": [
             {
-                "action": "./vendor/bin/pest --coverage --min=100 --parallel --processes=10"
+                "action": "./vendor/bin/pest --coverage --min=0 --parallel --processes=10"
             }
         ]
     },

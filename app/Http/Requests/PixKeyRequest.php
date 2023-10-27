@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-use CodePix\System\Domain\Enum\EnumPixType;
+use CodePix\Bank\Domain\Enum\EnumPixType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -24,7 +24,7 @@ class PixKeyRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'bank' => ['required', 'uuid'],
+            'account' => ['required', 'uuid', 'exists:accounts,id'],
             'kind' => ['required', new Enum(EnumPixType::class)],
         ];
 

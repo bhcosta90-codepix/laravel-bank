@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use CodePix\System\Domain\Enum\EnumPixType;
-use CodePix\System\Domain\Enum\EnumTransactionStatus;
+use CodePix\Bank\Domain\Enum\EnumPixType;
+use CodePix\Bank\Domain\Enum\EnumTransactionStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

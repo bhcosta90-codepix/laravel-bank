@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace System\Domain\Repositories;
+namespace Bank\Domain\Repositories;
 
 use App\Models\Transaction;
-use CodePix\System\Application\Repository\TransactionRepositoryInterface;
-use CodePix\System\Domain\DomainTransaction;
-use CodePix\System\Domain\Enum\EnumPixType;
-use CodePix\System\Domain\Enum\EnumTransactionStatus;
+use CodePix\Bank\Application\Repository\TransactionRepositoryInterface;
+use CodePix\Bank\Domain\DomainTransaction;
+use CodePix\Bank\Domain\Enum\EnumPixType;
+use CodePix\Bank\Domain\Enum\EnumTransactionStatus;
 use Illuminate\Support\Arr;
 
 class TransactionRepository implements TransactionRepositoryInterface
