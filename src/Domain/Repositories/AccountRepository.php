@@ -7,6 +7,7 @@ namespace Bank\Domain\Repositories;
 use App\Models\Account;
 use CodePix\Bank\Application\Repository\AccountRepositoryInterface;
 use CodePix\Bank\Domain\DomainAccount;
+use Illuminate\Support\Arr;
 
 class AccountRepository implements AccountRepositoryInterface
 {
@@ -15,7 +16,7 @@ class AccountRepository implements AccountRepositoryInterface
     }
 
     private array $fieldsUpdated = [
-        'status',
+        'balance',
     ];
 
     public function create(DomainAccount $entity): ?DomainAccount
@@ -25,7 +26,13 @@ class AccountRepository implements AccountRepositoryInterface
 
     public function save(DomainAccount $entity): ?DomainAccount
     {
-        dd('TODO: Implement save() method.');
+        if (($db = $this->model->find($entity->id())) && $db->update(
+                Arr::only($entity->toArray(), $this->fieldsUpdated)
+            )) {
+            return $entity;
+        }
+
+        return null;
     }
 
     public function find(string $id): ?DomainAccount

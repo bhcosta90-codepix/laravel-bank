@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Services\Contracts\AMQPInterface;
 use App\Services\Contracts\RabbitMQInterface;
 use App\Services\RabbitMQService;
+use Bank\Application\DatabaseTransaction;
 use Bank\Domain\Integration\PixKeyIntegration;
 use BRCas\CA\Contracts\Event\EventManagerInterface;
+use BRCas\CA\Contracts\Transaction\DatabaseTransactionInterface;
 use CodePix\Bank\Integration\PixKeyIntegrationInterface;
 use Illuminate\Support\ServiceProvider;
 use Bank\Application\EventManager;
@@ -23,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
             $this->app->register(TelescopeServiceProvider::class);
         }
 
+        $this->app->singleton(DatabaseTransactionInterface::class, DatabaseTransaction::class);
         $this->app->singleton(PixKeyIntegrationInterface::class, PixKeyIntegration::class);
         $this->app->singleton(EventManagerInterface::class, EventManager::class);
         $this->app->singleton(AMQPInterface::class, RabbitMQService::class);
