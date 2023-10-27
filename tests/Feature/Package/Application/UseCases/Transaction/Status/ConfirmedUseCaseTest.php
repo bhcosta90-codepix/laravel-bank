@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Event;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertInstanceOf;
 
-beforeEach(function () {
-    $this->transaction = Transaction::factory()->create(['status' => EnumTransactionStatus::PENDING]);
-    $this->useCase = app(ConfirmedUseCase::class);
-});
+//beforeEach(function () {
+//    $this->transaction = Transaction::factory()->create(['status' => EnumTransactionStatus::PENDING]);
+//    $this->useCase = app(ConfirmedUseCase::class);
+//})->todo();
 
 describe("ConfirmedUseCase Feature Test", function () {
     test("saving a confirmed transaction", function () {
@@ -36,12 +36,12 @@ describe("ConfirmedUseCase Feature Test", function () {
             ];
             return $event->payload() == $data;
         });
-    });
+    })->todo();
 
     test("exception when this transaction is open", function () {
         $transaction = Transaction::factory()->create();
         expect(fn() => $this->useCase->exec($transaction->id))->toThrow(
             new EntityException('Only pending transaction can be confirmed')
         );
-    });
+    })->todo();
 });

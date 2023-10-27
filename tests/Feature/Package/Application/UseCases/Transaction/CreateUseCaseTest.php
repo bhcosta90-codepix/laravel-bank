@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Event;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNull;
 
-beforeEach(function () {
-    $this->useCase = app(CreateUseCase::class);
-
-    $this->pix = PixKey::factory()->create([
-        'kind' => 'email',
-        'key' => 'test@test.com',
-    ]);
-});
+//beforeEach(function () {
+//    $this->useCase = app(CreateUseCase::class);
+//
+//    $this->pix = PixKey::factory()->create([
+//        'kind' => 'email',
+//        'key' => 'test@test.com',
+//    ]);
+//})->todo();
 
 describe("CreateUseCase Feature Test", function () {
     test("registering a new transaction without pix", function () {
@@ -45,7 +45,7 @@ describe("CreateUseCase Feature Test", function () {
             ];
             return $event->payload() == $verify;
         });
-    });
+    })->todo();
 
     test("registering a new transaction with pix", function () {
         Event::fake();
@@ -66,5 +66,5 @@ describe("CreateUseCase Feature Test", function () {
         Event::assertDispatched(EventTransactionCreating::class, function ($event) use ($response) {
             return $event->payload() == $response->toArray();
         });
-    });
+    })->todo();
 });

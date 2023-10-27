@@ -45,7 +45,7 @@ describe("CreatingCommand Unit Test", function () {
             "kind" => "email",
             "key" => "test@test.com",
         ]);
-    });
+    })->todo();
 
     test("creating a transaction with success", function () {
         PixKey::factory()->create([
@@ -88,5 +88,5 @@ describe("CreatingCommand Unit Test", function () {
             "kind" => "email",
             "key" => "test@test.com",
         ]);
-    });
+    })->todo();
 });

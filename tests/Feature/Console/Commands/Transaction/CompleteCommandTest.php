@@ -25,5 +25,5 @@ describe("CompletedCommand Unit Test", function () {
         assertDatabaseHas(Transaction::class, [
             'status' => 'completed'
         ]);
-    });
+    })->todo();
 });

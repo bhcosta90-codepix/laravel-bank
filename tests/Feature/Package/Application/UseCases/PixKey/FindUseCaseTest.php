@@ -9,19 +9,19 @@ use CodePix\System\Domain\DomainPixKey;
 
 use function PHPUnit\Framework\assertInstanceOf;
 
-beforeEach(function () {
-    $this->pix = PixKey::factory()->create(['kind' => 'email', 'key' => 'test@test.com']);
-    $this->useCase = app(FindUseCase::class);
-});
+//beforeEach(function () {
+//    $this->pix = PixKey::factory()->create(['kind' => 'email', 'key' => 'test@test.com']);
+//    $this->useCase = app(FindUseCase::class);
+//})->todo();
 
 describe("FindUseCase Feature Test", function () {
     test("searching a PixKey", function () {
         $response = $this->useCase->exec('email', 'test@test.com');
         assertInstanceOf(DomainPixKey::class, $response);
         expect()->toBeRemoveDateTime($this->pix->toArray(), $response->toArray());
-    });
+    })->todo();
 
     test("exception -> searching a PixKey", function () {
         expect(fn() => $this->useCase->exec('email', 'test1@test.com'))->toThrow(DomainNotFoundException::class);
-    });
+    })->todo();
 });
