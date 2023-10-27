@@ -21,7 +21,7 @@ services:
         image: kooldev/php:8.2-nginx
         volumes:
             - .:/app:delegated
-            - ./supervisor.conf:/kool/supervisor.conf
+            #- ./supervisor.conf:/kool/supervisor.conf
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         networks:

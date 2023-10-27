@@ -29,17 +29,23 @@ class RabbitMQService implements AMQPInterface, RabbitMQInterface
             $topic = [$topic];
         }
 
+        $topics = array_map(function ($value) {
+            return config('system.bank') . "." . $value;
+        }, $topic);
+
         $topic = [
-            'routing' => $topic,
+            'routing' => $topics,
             'queue_force_declare' => true,
         ];
 
         do {
-            Amqp::consume($queue, function ($message, $resolver) use ($queue, $closure) {
+            Amqp::consume(config('system.bank') . "_" . $queue, function ($message, $resolver) use ($queue, $closure) {
                 try {
                     $closure($message->body);
                 } catch (Throwable $e) {
-                    Log::driver('queue')->error("Error consumer {$queue}: " . $e->getMessage() . json_encode($e->getTrace()));
+                    Log::driver('queue')->error(
+                        "Error consumer {$queue}: " . $e->getMessage() . json_encode($e->getTrace())
+                    );
                 }
                 $resolver->acknowledge($message);
                 $resolver->stopWhenProcessed();
