@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Adapter\ApiAdapter;
+use App\Http\Resources\DefaultResource;
 use BRCas\CA\Exceptions\DomainNotFoundException;
 use CodePix\Bank\Application\UseCases\Account;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;

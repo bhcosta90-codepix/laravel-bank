@@ -35,6 +35,6 @@ class TransactionController extends Controller
     public function show(Request $request, FindUseCase $findUseCase): JsonResponse
     {
         $response = $findUseCase->exec($request->transaction);
-        return ApiAdapter::json($response->toArray());
+        return ApiAdapter::json($response->toArray(), Response::HTTP_OK);
     }
 }

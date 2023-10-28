@@ -19,10 +19,6 @@ class ApiAdapter
 
     public function toJson(): AnonymousResourceCollection
     {
-        // if (!$this->response) {
-        //     throw new \Exception('Response is null');
-        // }
-
         return DefaultResource::collection($this->response->items())
             ->additional([
                 'meta' => [
@@ -37,14 +33,13 @@ class ApiAdapter
             ]);
     }
 
-//    public function toXml()
-//    {
-    //
-//    }
-
-    public static function json(object|array $data, int $statusCode = 200): JsonResponse
+    public static function json(
+        object|array $data,
+        int $statusCode = 200,
+        $resource = DefaultResource::class
+    ): JsonResponse
     {
-        return (new DefaultResource($data))
+        return (new $resource($data))
             ->response()
             ->setStatusCode($statusCode);
     }
