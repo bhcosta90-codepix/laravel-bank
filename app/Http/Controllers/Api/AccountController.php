@@ -5,13 +5,20 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Adapter\ApiAdapter;
-use App\Http\Resources\DefaultResource;
+use App\Http\Requests\AccountRequest;
 use BRCas\CA\Exceptions\DomainNotFoundException;
 use CodePix\Bank\Application\UseCases\Account;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class AccountController
 {
+    public function store(AccountRequest $accountRequest, Account\CreateUseCase $createUseCase): JsonResponse
+    {
+        $response = $createUseCase->exec($accountRequest->name);
+        return ApiAdapter::json($response->toArray(), Response::HTTP_CREATED);
+    }
     /**
      * @throws DomainNotFoundException
      */

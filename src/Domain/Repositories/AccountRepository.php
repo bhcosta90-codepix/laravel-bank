@@ -26,7 +26,10 @@ class AccountRepository implements AccountRepositoryInterface
 
     public function create(DomainAccount $entity): ?DomainAccount
     {
-        dd('TODO: Implement create() method.');
+        if ($this->model->create($entity->toArray())) {
+            return $entity;
+        }
+        return null;
     }
 
     public function save(DomainAccount $entity): ?DomainAccount

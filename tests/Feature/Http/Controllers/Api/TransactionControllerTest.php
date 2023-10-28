@@ -98,6 +98,18 @@ describe("TransactionController Feature Test", function(){
                 [[], ['value', 'account', 'kind', 'key']],
             ]);
 
+            test("validating required fields with translate", function ($data, $fields) {
+                $response = postJson($this->endpoint, $data);
+                foreach ($fields as $field) {
+                    expect(__('validation.required', ['attribute' => __("validation.attributes.{$field}")]))->toBeValidateResponse(
+                        $response,
+                        $field
+                    );
+                }
+            })->with([
+                [[], ['description']],
+            ]);
+
             test("validating numeric fields", function ($data, $fields) {
                 $response = postJson($this->endpoint, $data);
                 foreach ($fields as $field) {
