@@ -16,6 +16,8 @@ return new class extends Migration {
             $table->string('kind');
             $table->string('key');
             $table->timestamps();
+
+            $table->unique(['kind', 'key']);
         });
     }
 

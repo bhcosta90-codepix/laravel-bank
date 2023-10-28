@@ -5,13 +5,18 @@ declare(strict_types=1);
 namespace Bank\Domain\Repositories;
 
 use App\Models\Account;
+use App\Models\PixKey;
+use App\Models\Transaction;
+use Bank\Domain\Repositories\Presenters\PaginationPresenter;
+use BRCas\CA\Contracts\Items\PaginationInterface;
 use CodePix\Bank\Application\Repository\AccountRepositoryInterface;
 use CodePix\Bank\Domain\DomainAccount;
 use Illuminate\Support\Arr;
 
 class AccountRepository implements AccountRepositoryInterface
 {
-    public function __construct(protected Account $model){
+    public function __construct(protected Account $model, protected Transaction $transaction, protected PixKey $pixKey)
+    {
         //
     }
 
@@ -38,6 +43,24 @@ class AccountRepository implements AccountRepositoryInterface
     public function find(string $id): ?DomainAccount
     {
         return $this->toEntity($this->model->find($id));
+    }
+
+    public function myTransactions(DomainAccount $entity): PaginationInterface
+    {
+        $result = $this->transaction->where('account_id', $entity->id())
+            ->orderBy('created_at', 'asc')
+            ->paginate();
+
+        return new PaginationPresenter($result);
+    }
+
+    public function myPixKeys(DomainAccount $entity): PaginationInterface
+    {
+        $result = $this->pixKey->where('account_id', $entity->id())
+            ->orderBy('created_at', 'asc')
+            ->paginate();
+
+        return new PaginationPresenter($result);
     }
 
     protected function toEntity(?Account $model): ?DomainAccount

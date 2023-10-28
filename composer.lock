@@ -125,12 +125,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bhcosta90-codepix/package-bank-v2.git",
-                "reference": "278d1d4b2a99505387a28b09ac55164fe3d1d111"
+                "reference": "1227ba0d8884008e983d866ec3b7fa2897130e17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bhcosta90-codepix/package-bank-v2/zipball/278d1d4b2a99505387a28b09ac55164fe3d1d111",
-                "reference": "278d1d4b2a99505387a28b09ac55164fe3d1d111",
+                "url": "https://api.github.com/repos/bhcosta90-codepix/package-bank-v2/zipball/1227ba0d8884008e983d866ec3b7fa2897130e17",
+                "reference": "1227ba0d8884008e983d866ec3b7fa2897130e17",
                 "shasum": ""
             },
             "require": {
@@ -168,7 +168,7 @@
                 "source": "https://github.com/bhcosta90-codepix/package-bank-v2/tree/master",
                 "issues": "https://github.com/bhcosta90-codepix/package-bank-v2/issues"
             },
-            "time": "2023-10-28T13:19:27+00:00"
+            "time": "2023-10-28T16:02:55+00:00"
         },
         {
             "name": "brick/math",

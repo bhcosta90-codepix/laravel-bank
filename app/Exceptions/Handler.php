@@ -2,8 +2,10 @@
 
 namespace App\Exceptions;
 
+use BRCas\CA\Exceptions\DomainNotFoundException;
 use Costa\Entity\Exceptions\EntityException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use Throwable;
 
@@ -49,6 +51,7 @@ class Handler extends ExceptionHandler
 
         match (true) {
             $e instanceof EntityException => throw ValidationException::withMessages([__($e->getMessage())]),
+            $e instanceof DomainNotFoundException => abort(Response::HTTP_NOT_FOUND, $e->getMessage()),
             default => null,
         };
 

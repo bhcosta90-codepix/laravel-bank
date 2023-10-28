@@ -8,8 +8,10 @@ use App\Http\Resources\TransactionResource;
 use BRCas\CA\Exceptions\DomainNotFoundException;
 use BRCas\CA\Exceptions\UseCaseException;
 use CodePix\Bank\Application\UseCases\Transaction\DebitUseCase;
+use CodePix\Bank\Application\UseCases\Transaction\FindUseCase;
 use Costa\Entity\Exceptions\NotificationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TransactionController extends Controller
@@ -23,6 +25,15 @@ class TransactionController extends Controller
     {
         $data = $transactionRequest->validated();
         $response = $useCase->exec($data["account"], $data["description"], $data["value"], $data["kind"], $data["key"]);
+        return (new TransactionResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
+    }
+
+    /**
+     * @throws DomainNotFoundException
+     */
+    public function show(Request $request, FindUseCase $findUseCase): JsonResponse
+    {
+        $response = $findUseCase->exec($request->transaction);
         return (new TransactionResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
     }
 }

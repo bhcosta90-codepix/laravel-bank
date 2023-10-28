@@ -17,8 +17,17 @@ use Illuminate\Support\Facades\Route;
 Route::name('api.')->group(function(){
     Route::prefix('account')->group(function(){
         Route::prefix('{account}')->group(function(){
-            Route::post('transaction', [Api\TransactionController::class, 'store'])->name('transaction.store');
-            Route::post('pix', [Api\PixKeyController::class, 'store'])->name('pix.store');
+
+            Route::prefix('pix')->name('pix.')->group(function(){
+                Route::post('pix', [Api\PixKeyController::class, 'store'])->name('store');
+                Route::get('pix', [Api\AccountController::class, 'pixKeys'])->name('index');
+            });
+
+            Route::prefix('transaction')->name('transaction.')->group(function(){
+                Route::get('', [Api\AccountController::class, 'transaction'])->name('index');
+                Route::post('', [Api\TransactionController::class, 'store'])->name('store');
+                Route::get('{transaction}', [Api\TransactionController::class, 'show'])->name('show');
+            });
         });
     });
 });
