@@ -16,7 +16,7 @@ beforeEach(function(){
     ]);
 });
 
-describe("CreatingCommand Unit Test", function () {
+describe("CreatingCommand Feature Test", function () {
     test("creating a transaction with error", function () {
         $command = new CreatingCommand();
         $command->handle(
@@ -51,6 +51,7 @@ describe("CreatingCommand Unit Test", function () {
             "value" => 50.0,
             "kind" => "email",
             "key" => "test@test.com",
+            "type" => 0,
         ]);
         assertEquals(50, $this->pixKey->account->balance);
     });

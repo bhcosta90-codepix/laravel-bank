@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "bhcosta90/package-bank-v2": "dev-master",
+        "bhcosta90/package-bank": "dev-master",
         "bschmitt/laravel-amqp": "^2.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",

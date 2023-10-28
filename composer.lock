@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "154a176fc0c1c8060ccaca0a94f96cdd",
+    "content-hash": "b5a5e97abdfd15d7cfab4b3196b985be",
     "packages": [
         {
             "name": "bhcosta90/clean-architecture",
@@ -120,17 +120,17 @@
             "time": "2023-10-26T17:19:45+00:00"
         },
         {
-            "name": "bhcosta90/package-bank-v2",
+            "name": "bhcosta90/package-bank",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bhcosta90-codepix/package-bank-v2.git",
-                "reference": "ba0b4d59aee1684a2398153fcebb3755ef2fdf2d"
+                "reference": "278d1d4b2a99505387a28b09ac55164fe3d1d111"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bhcosta90-codepix/package-bank-v2/zipball/ba0b4d59aee1684a2398153fcebb3755ef2fdf2d",
-                "reference": "ba0b4d59aee1684a2398153fcebb3755ef2fdf2d",
+                "url": "https://api.github.com/repos/bhcosta90-codepix/package-bank-v2/zipball/278d1d4b2a99505387a28b09ac55164fe3d1d111",
+                "reference": "278d1d4b2a99505387a28b09ac55164fe3d1d111",
                 "shasum": ""
             },
             "require": {
@@ -168,7 +168,7 @@
                 "source": "https://github.com/bhcosta90-codepix/package-bank-v2/tree/master",
                 "issues": "https://github.com/bhcosta90-codepix/package-bank-v2/issues"
             },
-            "time": "2023-10-28T02:28:32+00:00"
+            "time": "2023-10-28T13:19:27+00:00"
         },
         {
             "name": "brick/math",
@@ -9924,7 +9924,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "bhcosta90/package-bank-v2": 20
+        "bhcosta90/package-bank": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

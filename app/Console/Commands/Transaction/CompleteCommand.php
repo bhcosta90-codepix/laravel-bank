@@ -3,17 +3,17 @@
 namespace App\Console\Commands\Transaction;
 
 use App\Services\Contracts\RabbitMQInterface;
-use CodePix\Bank\Application\UseCases\Transaction\Status\ConfirmedUseCase;
+use CodePix\Bank\Application\UseCases\Transaction\Status\CompleteUseCase;
 use Illuminate\Console\Command;
 
-class ConfirmationCommand extends Command
+class CompleteCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'transaction:confirmation';
+    protected $signature = 'transaction:complete';
 
     /**
      * The console command description.
@@ -27,13 +27,12 @@ class ConfirmationCommand extends Command
      */
     public function handle(RabbitMQInterface $rabbitMQService): void
     {
-        $rabbitMQService->consume("transaction_confirmation", "transaction.confirmation", function ($message) {
+        $rabbitMQService->consume("transaction_complete", "transaction.complete", function ($message) {
             $data = json_decode($message, true);
-
             /**
-             * @var ConfirmedUseCase $useCase
-             */
-            $useCase = app(ConfirmedUseCase::class);
+             * @var CompleteUseCase $useCase
+            */
+            $useCase = app(CompleteUseCase::class);
             $useCase->exec(
                 id: $data['id'],
             );
