@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Adapter\ApiAdapter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PixKeyRequest;
-use App\Http\Resources\PixKeyResource;
 use BRCas\CA\Exceptions\DomainNotFoundException;
 use BRCas\CA\Exceptions\UseCaseException;
 use CodePix\Bank\Application\UseCases\PixKey\CreateUseCase;
 use Costa\Entity\Exceptions\EntityException;
 use Costa\Entity\Exceptions\NotificationException;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 
 class PixKeyController extends Controller
 {
@@ -25,6 +24,6 @@ class PixKeyController extends Controller
     {
         $data = $pixKeyRequest->validated();
         $response = $createUseCase->exec($data["account"], $data["kind"], $data["key"] ?? null);
-        return (new PixKeyResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
+        return ApiAdapter::json($response->toArray());
     }
 }

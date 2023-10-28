@@ -6,6 +6,7 @@ namespace App\Adapter;
 
 use App\Http\Resources\DefaultResource;
 use BRCas\CA\Contracts\Items\PaginationInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ApiAdapter
@@ -41,10 +42,10 @@ class ApiAdapter
     //
 //    }
 
-//    public static function json(object $data, int $statusCode = 200): JsonResponse
-//    {
-//        return (new DefaultResource($data))
-//            ->response()
-//            ->setStatusCode($statusCode);
-//    }
+    public static function json(object|array $data, int $statusCode = 200): JsonResponse
+    {
+        return (new DefaultResource($data))
+            ->response()
+            ->setStatusCode($statusCode);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Adapter\ApiAdapter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TransactionRequest;
 use App\Http\Resources\TransactionResource;
@@ -25,7 +26,7 @@ class TransactionController extends Controller
     {
         $data = $transactionRequest->validated();
         $response = $useCase->exec($data["account"], $data["description"], $data["value"], $data["kind"], $data["key"]);
-        return (new TransactionResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
+        return ApiAdapter::json($response->toArray(), Response::HTTP_CREATED);
     }
 
     /**
@@ -34,6 +35,6 @@ class TransactionController extends Controller
     public function show(Request $request, FindUseCase $findUseCase): JsonResponse
     {
         $response = $findUseCase->exec($request->transaction);
-        return (new TransactionResource($response))->response()->setStatusCode(Response::HTTP_CREATED);
+        return ApiAdapter::json($response->toArray());
     }
 }
