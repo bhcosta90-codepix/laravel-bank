@@ -20,8 +20,8 @@ Route::name('api.')->group(function(){
 
         Route::prefix('{account}')->group(function(){
             Route::prefix('pix')->name('pix.')->group(function(){
-                Route::post('pix', [Api\PixKeyController::class, 'store'])->name('store');
-                Route::get('pix', [Api\AccountController::class, 'pixKeys'])->name('index');
+                Route::post('', [Api\PixKeyController::class, 'store'])->name('store');
+                Route::get('', [Api\AccountController::class, 'pixKeys'])->name('index');
             });
 
             Route::prefix('transaction')->name('transaction.')->group(function(){
