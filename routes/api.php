@@ -19,6 +19,7 @@ Route::name('api.')->group(function(){
         Route::post('', [Api\AccountController::class, 'store'])->name('account.store');
 
         Route::prefix('{account}')->group(function(){
+            Route::get('', [Api\AccountController::class, 'show'])->name('account.show');
             Route::prefix('pix')->name('pix.')->group(function(){
                 Route::post('', [Api\PixKeyController::class, 'store'])->name('store');
                 Route::get('', [Api\AccountController::class, 'pixKeys'])->name('index');

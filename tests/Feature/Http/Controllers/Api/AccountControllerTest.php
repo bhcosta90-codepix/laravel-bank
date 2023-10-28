@@ -12,6 +12,22 @@ use function Pest\Laravel\postJson;
 use function PHPUnit\Framework\assertEquals;
 
 describe("AccountController Feature Test", function(){
+
+    describe("action show", function(){
+        test("show a transaction", function(){
+            $account = Account::factory()->create();
+            $endpointShow = route('api.account.show', $account->id);
+
+            $response = getJson($endpointShow);
+            assertEquals($account->id, $response->json('data.id'));
+        });
+
+        test("exception when the account do not exist", function(){
+            $endpointShow = route('api.account.show', str()->uuid());
+            getJson($endpointShow)->assertStatus(404);
+        });
+    });
+
     describe("action store", function(){
         beforeEach(function(){
             $this->endpoint = route('api.account.store');
