@@ -51,7 +51,7 @@ class AccountRepository implements AccountRepositoryInterface
     public function myTransactions(DomainAccount $entity): PaginationInterface
     {
         $result = $this->transaction->where('account_id', $entity->id())
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->paginate();
 
         return new PaginationPresenter($result);
@@ -60,7 +60,7 @@ class AccountRepository implements AccountRepositoryInterface
     public function myPixKeys(DomainAccount $entity): PaginationInterface
     {
         $result = $this->pixKey->where('account_id', $entity->id())
-            ->orderBy('created_at', 'asc')
+            ->orderBy('created_at', 'desc')
             ->paginate();
 
         return new PaginationPresenter($result);

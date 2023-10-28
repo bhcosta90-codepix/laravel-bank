@@ -21,6 +21,7 @@ class TransactionRepository implements TransactionRepositoryInterface
 
     private array $fieldsUpdated = [
         'status',
+        'cancel_description',
     ];
 
     public function create(DomainTransaction $entity): ?DomainTransaction

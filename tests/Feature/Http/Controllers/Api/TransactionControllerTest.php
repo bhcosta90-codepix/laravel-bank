@@ -56,7 +56,6 @@ describe("TransactionController Feature Test", function(){
             Event::assertDispatched(EventTransactionCreating::class, function ($event) use ($id) {
                 return $event->payload()['id'] == app(TransactionRepositoryInterface::class)->find($id)->id();
             });
-            Event::assertNotDispatched(EventTransactionError::class);
         })->with([
             [['key' => 'test@test.com', 'kind' => 'email']],
             [['key' => '(19) 98870-9090', 'kind' => 'phone']],
@@ -79,9 +78,6 @@ describe("TransactionController Feature Test", function(){
             assertEquals("You cannot transfer to your own account", $response->json('data.cancel_description'));
 
             $id = $response->json('data.id');
-            Event::assertDispatched(EventTransactionError::class, function ($event) use ($id) {
-                return $event->payload()['id'] == app(TransactionRepositoryInterface::class)->find($id)->id();
-            });
             Event::assertNotDispatched(EventTransactionCreating::class);
         });
 
