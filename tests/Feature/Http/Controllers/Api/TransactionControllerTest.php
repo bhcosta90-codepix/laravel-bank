@@ -77,7 +77,6 @@ describe("TransactionController Feature Test", function(){
             assertEquals("error", $response->json('data.status'));
             assertEquals("You cannot transfer to your own account", $response->json('data.cancel_description'));
 
-            $id = $response->json('data.id');
             Event::assertNotDispatched(EventTransactionCreating::class);
         });
 
