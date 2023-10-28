@@ -16,6 +16,13 @@ class TransactionRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'account' => request()->route()->parameter('account'),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -24,9 +31,9 @@ class TransactionRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
+            'account' => ['required', 'uuid', 'exists:accounts,id'],
             'value' => ['required', 'numeric', 'min:0.01'],
             'description' => ['required', 'string', 'min:3', 'max:100'],
-            'account' => ['required', 'uuid', 'exists:accounts,id'],
             'kind' => ['required', new Enum(EnumPixType::class)],
             'key' => ['required'],
         ];

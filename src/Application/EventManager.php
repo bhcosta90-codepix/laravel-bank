@@ -18,7 +18,7 @@ class EventManager implements EventManagerInterface
     {
 
         foreach ($events as $event) {
-            Log::driver('event')->info(["event" => get_class($event), "data" => json_encode($event->payload())]);
+            Log::debug("Event: " . get_class($event) . ": " . json_encode(["data" => $event->payload()]));
             event($event);
         }
     }

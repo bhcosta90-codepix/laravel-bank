@@ -81,20 +81,20 @@ describe("PixKeyController Feature Test", function () {
                 expect(__('validation.required', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
         })->with([
-            [[], ['account', 'kind']],
+            [[], ['kind']],
         ]);
 
         test("validating uuid fields", function ($data, $fields) {
-            $response = postJson($this->endpoint, $data);
+            $response = postJson(route('api.pix.store', 'testing'), $data);
             foreach ($fields as $field) {
                 expect(__('validation.uuid', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
         })->with([
-            [['account' => 'testing'], ['account']],
+            [[], ['account']],
         ]);
 
         test("validating exists fields", function ($data, $fields) {
-            $response = postJson($this->endpoint, $data);
+            $response = postJson(route('api.pix.store', str()->uuid()), $data);
             foreach ($fields as $field) {
                 expect(__('validation.exists', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }

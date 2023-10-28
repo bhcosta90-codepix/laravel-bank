@@ -16,6 +16,13 @@ class PixKeyRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'account' => request()->route()->parameter('account'),
+        ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *

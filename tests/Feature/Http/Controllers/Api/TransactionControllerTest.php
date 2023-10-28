@@ -90,7 +90,7 @@ describe("TransactionController Feature Test", function(){
                     );
                 }
             })->with([
-                [[], ['value', 'account', 'kind', 'key']],
+                [[], ['value', 'kind', 'key']],
             ]);
 
             test("validating required fields with translate", function ($data, $fields) {

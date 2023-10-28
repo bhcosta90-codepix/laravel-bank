@@ -20,12 +20,16 @@ class RabbitMQService implements AMQPInterface, RabbitMQInterface
 
     public function publish($name, array $value = []): void
     {
-        Log::driver('queue')->info("Success publish {$name}: " . json_encode($value));
+        Log::debug("Success publish {$name}: " . json_encode($value));
         Amqp::publish($name, json_encode($value + ['bank' => config('system.bank')]));
     }
 
     public function consume(string $queue, array|string $topic, Closure $closure, array $custom = []): void
     {
+        $queue = config('system.bank') . "_" . $queue;
+
+        Log::debug("Starter consumer {$queue}");
+
         if (is_string($topic)) {
             $topic = [$topic];
         }
@@ -39,17 +43,13 @@ class RabbitMQService implements AMQPInterface, RabbitMQInterface
             'queue_force_declare' => true,
         ];
 
-        Log::driver('queue')->info("Starter consumer {$queue}");
-
         do {
-            Amqp::consume(config('system.bank') . "_" . $queue, function ($message, $resolver) use ($queue, $closure) {
+            Amqp::consume($queue, function ($message, $resolver) use ($queue, $closure) {
                 try {
                     $closure($message->body);
-                    Log::driver('queue')->info("Success consumer {$queue}: " . $message->body);
+                    Log::debug("Success consumer {$queue}: " . $message->body);
                 } catch (Throwable $e) {
-                    Log::driver('queue')->error(
-                        "Error consumer {$queue}: " . $e->getMessage() . json_encode($e->getTrace())
-                    );
+                    Log::error("Error consumer {$queue}: " . $e->getMessage() . json_encode($e->getTrace()));
                 }
                 $resolver->acknowledge($message);
                 $resolver->stopWhenProcessed();

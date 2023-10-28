@@ -20,12 +20,12 @@ class RabbitMQServiceStub implements AMQPInterface, RabbitMQInterface
 
     public function publish($name, array $value = []): void
     {
-        Log::driver('testing')->info(['action' => __FUNCTION__, 'name' => $name, 'value' => $value]);
+        Log::debug(json_encode(['action' => __FUNCTION__, 'name' => $name, 'value' => $value]));
     }
 
     public function consume(string $queue, array|string $topic, Closure $closure, array $custom = []): void
     {
-        Log::driver('testing')->info(['action' => __FUNCTION__, 'queue' => $queue, 'topic' => $topic, 'custom' => $custom]);
+        Log::debug(json_encode(['action' => __FUNCTION__, 'queue' => $queue, 'topic' => $topic, 'custom' => $custom]));
         $closure($this->data);
     }
 }
