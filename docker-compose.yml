@@ -17,6 +17,23 @@ services:
             - kool_global
         extra_hosts:
             - 'host.docker.internal:host-gateway'
+
+    app_02:
+        image: kooldev/php:8.2-nginx
+        ports:
+            - "7101:80"
+        environment:
+            ASUSER: "${KOOL_ASUSER:-0}"
+            UID: "${UID:-0}"
+            BANK_ID: "0741dbe4-75b9-11ee-b962-0242ac120002"
+        volumes:
+            - .:/app:delegated
+        networks:
+            - kool_local
+            - kool_global
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+
     commands:
         image: kooldev/php:8.2-nginx
         volumes:
@@ -26,6 +43,18 @@ services:
             - 'host.docker.internal:host-gateway'
         networks:
             - kool_local
+
+    commands_02:
+        image: kooldev/php:8.2-nginx
+        volumes:
+            - .:/app:delegated
+            - ./supervisor.conf:/kool/supervisor.conf
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        networks:
+            - kool_local
+        environment:
+            - BANK_ID=0741dbe4-75b9-11ee-b962-0242ac120002
 
     database:
         image: postgres:13-alpine
