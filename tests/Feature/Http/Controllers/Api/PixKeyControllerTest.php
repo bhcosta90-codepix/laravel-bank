@@ -15,11 +15,13 @@ beforeEach(function(){
     $this->defaults = [
         'account' => $this->account->id,
     ];
+
+    $this->endpoint = route('api.pix.store', $this->account->id);
 });
 
 describe("PixKeyController Feature Test", function () {
     test("creating a multiple pix", function ($data) {
-        $response = postJson(route('api.pix.store'), $data + $this->defaults)->assertJsonStructure([
+        $response = postJson($this->endpoint, $data + $this->defaults)->assertJsonStructure([
             'data' => [
                 'account' => [
                     'balance',
@@ -46,7 +48,7 @@ describe("PixKeyController Feature Test", function () {
 
     test("registering a pix passing the kind id with a defined value", function () {
         $data = ['kind' => 'id', 'key' => 'testing'];
-        $response = postJson(route('api.pix.store'), $data + $this->defaults);
+        $response = postJson($this->endpoint, $data + $this->defaults);
         assertNotEquals('testing', $response->json('data.key'));
         expect(true)->toBeDatabaseResponse($response, PixKey::class, ['account']);
     });
@@ -59,7 +61,7 @@ describe("PixKeyController Feature Test", function () {
             ]
         );
 
-        postJson(route('api.pix.store'), $this->defaults + $pix)->assertStatus(422)->assertJsonStructure([
+        postJson($this->endpoint, $this->defaults + $pix)->assertStatus(422)->assertJsonStructure([
             'message',
             'errors',
         ])->assertJson([
@@ -74,7 +76,7 @@ describe("PixKeyController Feature Test", function () {
 
     describe("validation fields", function() {
         test("validating required fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.required', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
@@ -83,7 +85,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating uuid fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.uuid', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
@@ -92,7 +94,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating exists fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.exists', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
@@ -101,7 +103,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating email fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.email', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
@@ -110,7 +112,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating phone fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect('O campo key não é um celular com DDD válido.')->toBeValidateResponse($response, $field);
             }
@@ -119,7 +121,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating document fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect('O campo key não é um CPF ou CNPJ válido.')->toBeValidateResponse($response, $field);
             }
@@ -128,7 +130,7 @@ describe("PixKeyController Feature Test", function () {
         ]);
 
         test("validating enum fields", function ($data, $fields) {
-            $response = postJson(route('api.pix.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.enum', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }

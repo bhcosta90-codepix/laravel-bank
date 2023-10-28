@@ -21,13 +21,15 @@ beforeEach(function(){
         'value' => 50,
         'description' => 'testing',
     ];
+
+    $this->endpoint = route('api.transaction.store', $this->account->id);
 });
 
 describe("TransactionController Feature Test", function(){
     test("creating a multiple pix", function ($data) {
         Event::fake();
 
-        $response = postJson(route('api.transaction.store'), $data + $this->defaults)->assertJsonStructure([
+        $response = postJson($this->endpoint, $data + $this->defaults)->assertJsonStructure([
             'data' => [
                 'account' => [
                     'balance',
@@ -68,7 +70,7 @@ describe("TransactionController Feature Test", function(){
             'kind' => $pix->kind,
             'key' => $pix->key,
         ];
-        $response = postJson(route('api.transaction.store'), $data + $this->defaults);
+        $response = postJson($this->endpoint, $data + $this->defaults);
         expect(true)->toBeDatabaseResponse($response, Transaction::class, ['account']);
         assertEquals("error", $response->json('data.status'));
         assertEquals("You cannot transfer to your own account", $response->json('data.cancel_description'));
@@ -82,7 +84,7 @@ describe("TransactionController Feature Test", function(){
 
     describe("validation fields", function() {
         test("validating required fields", function ($data, $fields) {
-            $response = postJson(route('api.transaction.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.required', ['attribute' => __($field)]))->toBeValidateResponse($response, $field);
             }
@@ -91,7 +93,7 @@ describe("TransactionController Feature Test", function(){
         ]);
 
         test("validating numeric fields", function ($data, $fields) {
-            $response = postJson(route('api.transaction.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.numeric', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
@@ -100,7 +102,7 @@ describe("TransactionController Feature Test", function(){
         ]);
 
         test("validating numeric with min fields", function ($data, $fields, float $min) {
-            $response = postJson(route('api.transaction.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.min.numeric', ['attribute' => $field, 'min' => $min]))->toBeValidateResponse($response, $field);
             }
@@ -109,7 +111,7 @@ describe("TransactionController Feature Test", function(){
         ]);
 
         test("validating uuid fields", function ($data, $fields) {
-            $response = postJson(route('api.transaction.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.uuid', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
@@ -118,7 +120,7 @@ describe("TransactionController Feature Test", function(){
         ]);
 
         test("validating email fields", function ($data, $fields) {
-            $response = postJson(route('api.transaction.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.email', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
@@ -127,7 +129,7 @@ describe("TransactionController Feature Test", function(){
         ]);
 
         test("validating phone fields", function ($data, $fields) {
-            $response = postJson(route('api.transaction.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect('O campo key não é um celular com DDD válido.')->toBeValidateResponse($response, $field);
             }
@@ -136,7 +138,7 @@ describe("TransactionController Feature Test", function(){
         ]);
 
         test("validating document fields", function ($data, $fields) {
-            $response = postJson(route('api.transaction.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect('O campo key não é um CPF ou CNPJ válido.')->toBeValidateResponse($response, $field);
             }
@@ -145,7 +147,7 @@ describe("TransactionController Feature Test", function(){
         ]);
 
         test("validating enum fields", function ($data, $fields) {
-            $response = postJson(route('api.transaction.store'), $data);
+            $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
                 expect(__('validation.enum', ['attribute' => $field]))->toBeValidateResponse($response, $field);
             }
