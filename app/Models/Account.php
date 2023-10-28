@@ -11,6 +11,10 @@ class Account extends Model
 {
     use HasFactory, HasUuids;
 
+    protected $casts = [
+        'balance' => "float"
+    ];
+
     protected $fillable = [
         'name',
         'balance',

@@ -13,13 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        Account::factory()
+            ->hasPix(1, ['kind' => 'email', 'key' => 'account1@account.com'])
+            ->create(['id' => "65b1e7a5-9f03-4e5f-8a50-9aebb21013dd"]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
-        $acount = Account::factory()->create(['id' => "65b1e7a5-9f03-4e5f-8a50-9aebb21013dd"])->hasPix();
+        Account::factory()
+            ->hasPix(1, ['kind' => 'email', 'key' => 'account2@account.com'])
+            ->create(['id' => "3966a0bd-e915-4d55-b3d7-83062799eecf"]);
     }
 }

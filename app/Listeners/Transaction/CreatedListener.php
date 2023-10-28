@@ -23,6 +23,6 @@ class CreatedListener
     public function handle(EventTransactionCreating $event): void
     {
         $payload = $event->payload();
-        $this->AMQP->publish("transaction.confirmation", $payload);
+        $this->AMQP->publish("transaction.creating", $payload);
     }
 }

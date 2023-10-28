@@ -28,9 +28,14 @@ class PixKeyRepository implements PixKeyRepositoryInterface
                 'account_id',
             ]);
 
+            $dataDomainAccount = $model->account->where('id', $model->account_id)
+                ->lockForUpdate()
+                ->first()
+                ->toArray();
+
             $data = [
                 'kind' => EnumPixType::from($model->kind),
-                'account' => DomainAccount::make($model->account->lockForUpdate()->first()->toArray()),
+                'account' => DomainAccount::make($dataDomainAccount),
             ];
             return DomainPixKey::make($data + $dataDomainPix);
         }

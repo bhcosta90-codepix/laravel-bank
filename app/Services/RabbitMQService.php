@@ -20,7 +20,8 @@ class RabbitMQService implements AMQPInterface, RabbitMQInterface
 
     public function publish($name, array $value = []): void
     {
-        Amqp::publish($name, json_encode($value));
+        Log::driver('queue')->info("Success publish {$name}: " . json_encode($value));
+        Amqp::publish($name, json_encode($value + ['bank' => config('system.bank')]));
     }
 
     public function consume(string $queue, array|string $topic, Closure $closure, array $custom = []): void
@@ -38,10 +39,13 @@ class RabbitMQService implements AMQPInterface, RabbitMQInterface
             'queue_force_declare' => true,
         ];
 
+        Log::driver('queue')->info("Starter consumer {$queue}");
+
         do {
             Amqp::consume(config('system.bank') . "_" . $queue, function ($message, $resolver) use ($queue, $closure) {
                 try {
                     $closure($message->body);
+                    Log::driver('queue')->info("Success consumer {$queue}: " . $message->body);
                 } catch (Throwable $e) {
                     Log::driver('queue')->error(
                         "Error consumer {$queue}: " . $e->getMessage() . json_encode($e->getTrace())

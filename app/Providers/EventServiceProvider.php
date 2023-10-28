@@ -29,10 +29,10 @@ class EventServiceProvider extends ServiceProvider
 //            CompletedListener::class
         ],
         EventTransactionConfirmed::class => [
-//            ConfirmedListener::class
+            ConfirmedListener::class
         ],
         EventTransactionCreating::class => [
-//            CreatedListener::class
+            CreatedListener::class
         ],
         EventTransactionError::class => [
 //            ErrorListener::class
