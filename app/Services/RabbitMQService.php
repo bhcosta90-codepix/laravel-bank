@@ -47,11 +47,11 @@ class RabbitMQService implements AMQPInterface, RabbitMQInterface
             Amqp::consume($queue, function ($message, $resolver) use ($queue, $closure) {
                 try {
                     $closure($message->body);
+                    $resolver->acknowledge($message);
                     Log::debug("Success consumer {$queue}: " . $message->body);
                 } catch (Throwable $e) {
                     Log::error("Error consumer {$queue}: " . $e->getMessage() . json_encode($e->getTrace()));
                 }
-                $resolver->acknowledge($message);
                 $resolver->stopWhenProcessed();
             }, $custom + $topic);
             sleep(1);
