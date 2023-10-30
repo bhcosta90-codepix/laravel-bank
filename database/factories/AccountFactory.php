@@ -19,6 +19,7 @@ class AccountFactory extends Factory
         return [
             'id' => str()->uuid(),
             'name' => $this->faker->name(),
+            'document' => $this->faker->cpf(),
         ];
     }
 }

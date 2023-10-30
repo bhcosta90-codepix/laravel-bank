@@ -9,6 +9,7 @@ use CodePix\Bank\Application\Repository\PixKeyRepositoryInterface;
 use CodePix\Bank\Domain\DomainAccount;
 use CodePix\Bank\Domain\DomainPixKey;
 use CodePix\Bank\Domain\Enum\EnumPixType;
+use CodePix\Bank\ValueObject\Document;
 use Illuminate\Support\Arr;
 
 class PixKeyRepository implements PixKeyRepositoryInterface
@@ -32,6 +33,8 @@ class PixKeyRepository implements PixKeyRepositoryInterface
                 ->lockForUpdate()
                 ->first()
                 ->toArray();
+
+            $dataDomainAccount['document'] = new Document($dataDomainAccount['document']);
 
             $data = [
                 'kind' => EnumPixType::from($model->kind),

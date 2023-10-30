@@ -19,6 +19,7 @@ class Account extends Model
         'id',
         'name',
         'balance',
+        'document',
     ];
 
     public function pix(): HasMany

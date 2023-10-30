@@ -11,6 +11,7 @@ use Bank\Domain\Repositories\Presenters\PaginationPresenter;
 use BRCas\CA\Contracts\Items\PaginationInterface;
 use CodePix\Bank\Application\Repository\AccountRepositoryInterface;
 use CodePix\Bank\Domain\DomainAccount;
+use CodePix\Bank\ValueObject\Document;
 use Illuminate\Support\Arr;
 
 class AccountRepository implements AccountRepositoryInterface
@@ -69,7 +70,9 @@ class AccountRepository implements AccountRepositoryInterface
     protected function toEntity(?Account $model): ?DomainAccount
     {
         if ($model) {
-            $data = [];
+            $data = [
+                'document' => new Document($model->document),
+            ];
             return DomainAccount::make($data + $model->toArray());
         }
 

@@ -17,7 +17,7 @@ class AccountController
 {
     public function store(AccountRequest $accountRequest, Account\CreateUseCase $createUseCase): JsonResponse
     {
-        $response = $createUseCase->exec($accountRequest->name);
+        $response = $createUseCase->exec($accountRequest->name, $accountRequest->document);
         return ApiAdapter::json($response->toArray(), Response::HTTP_CREATED);
     }
 

@@ -34,7 +34,7 @@ describe("AccountController Feature Test", function(){
         });
 
         test("execute", function(){
-            $response = postJson($this->endpoint, ['name' => 'testing'])->assertJsonStructure([
+            $response = postJson($this->endpoint, ['name' => 'testing', 'document' => '757.783.118-26'])->assertJsonStructure([
                 'data' => [
                     'balance',
                     'name',

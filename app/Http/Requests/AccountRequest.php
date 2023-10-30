@@ -22,7 +22,8 @@ class AccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min:3', 'max:100']
+            'name' => ['required', 'min:3', 'max:100'],
+            'document' => ['required', 'cpf_ou_cnpj'],
         ];
     }
 }

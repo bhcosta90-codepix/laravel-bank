@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('document', 25);
             $table->double('balance')->default(0);
             $table->timestamps();
         });

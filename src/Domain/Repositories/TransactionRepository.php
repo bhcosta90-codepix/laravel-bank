@@ -11,6 +11,7 @@ use CodePix\Bank\Domain\DomainTransaction;
 use CodePix\Bank\Domain\Enum\EnumPixType;
 use CodePix\Bank\Domain\Enum\EnumTransactionStatus;
 use CodePix\Bank\Domain\Enum\EnumTransactionType;
+use CodePix\Bank\ValueObject\Document;
 use Illuminate\Support\Arr;
 
 class TransactionRepository implements TransactionRepositoryInterface
@@ -55,8 +56,11 @@ class TransactionRepository implements TransactionRepositoryInterface
     protected function toEntity(?Transaction $model): ?DomainTransaction
     {
         if ($model) {
+            $dataAccount = [
+                "document" => new Document($model->account->document)
+            ];
             $data = [
-                'account' => DomainAccount::make($model->account->toArray()),
+                'account' => DomainAccount::make($dataAccount + $model->account->toArray()),
                 'kind' => EnumPixType::from($model->kind),
                 'status' => EnumTransactionStatus::from($model->status),
                 'type' => EnumTransactionType::from($model->type),
