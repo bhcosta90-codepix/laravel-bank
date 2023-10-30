@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Account;
 use CodePix\Bank\Domain\Enum\EnumPixType;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
@@ -19,8 +20,14 @@ class PixKeyRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'account' => request()->route()->parameter('account'),
+            'account' => $account = request()->route()->parameter('account'),
         ]);
+
+        if(request('kind') == EnumPixType::DOCUMENT->value){
+            $this->merge([
+                'key' => Account::find($account)->document,
+            ]);
+        }
     }
 
     /**

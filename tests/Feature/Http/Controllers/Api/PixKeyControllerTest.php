@@ -120,15 +120,6 @@ describe("PixKeyController Feature Test", function () {
             [['kind' => 'phone', 'key' => 'testing'], ['key']],
         ]);
 
-        test("validating document fields", function ($data, $fields) {
-            $response = postJson($this->endpoint, $data);
-            foreach ($fields as $field) {
-                expect('O campo key não é um CPF ou CNPJ válido.')->toBeValidateResponse($response, $field);
-            }
-        })->with([
-            [['kind' => 'document', 'key' => 'testing'], ['key']],
-        ]);
-
         test("validating enum fields", function ($data, $fields) {
             $response = postJson($this->endpoint, $data);
             foreach ($fields as $field) {
