@@ -26,7 +26,7 @@ Route::name('api.')->group(function(){
             });
 
             Route::prefix('transaction')->name('transaction.')->group(function(){
-                Route::get('', [Api\AccountController::class, 'transaction'])->name('index');
+                Route::get('', [Api\AccountController::class, 'transactions'])->name('index');
                 Route::post('', [Api\TransactionController::class, 'store'])->name('store');
                 Route::get('{transaction}', [Api\TransactionController::class, 'show'])->name('show');
             });

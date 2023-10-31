@@ -44,7 +44,7 @@ class AccountController
     /**
      * @throws DomainNotFoundException
      */
-    public function transaction(
+    public function transactions(
         string $account,
         Account\MyTransactionUseCase $myTransactionUseCase
     ): AnonymousResourceCollection {
