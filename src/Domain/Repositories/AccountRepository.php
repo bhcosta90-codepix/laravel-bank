@@ -44,9 +44,14 @@ class AccountRepository implements AccountRepositoryInterface
         return null;
     }
 
-    public function find(string $id): ?DomainAccount
+    public function find(string $id, $locked = false): ?DomainAccount
     {
         return $this->toEntity($this->model->find($id));
+    }
+
+    public function findByDocument(string $document): ?DomainAccount
+    {
+        return $this->toEntity($this->model->where('document', $document)->first());
     }
 
     public function myTransactions(DomainAccount $entity): PaginationInterface
