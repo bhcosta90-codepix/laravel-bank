@@ -1,0 +1,240 @@
+{
+	"info": {
+		"_postman_id": "588990d4-be0f-4481-a8c0-b9a44f67a7dc",
+		"name": "Account - outro banco",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "385845"
+	},
+	"item": [
+		{
+			"name": "Cadastro",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.status === \"Created\") {",
+							"    pm.collectionVariables.set(\"account\", pm.response.json().data.id);",
+							"",
+							"    if(pm.collectionVariables.get(\"account_from\") == null){",
+							"        pm.collectionVariables.set(\"account_from\", pm.response.json().data.id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"65b1e7a5-9f03-4e5f-8a50-9aebb21013dd\",\n    \"document\": \"757.783.118-26\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/account/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"account",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastro de pix",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.status === \"Created\") {",
+							"    pm.collectionVariables.set(\"kind\", pm.response.json().data.kind);",
+							"    pm.collectionVariables.set(\"key\", pm.response.json().data.key);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account\": \"{{account}}\",\n    \"kind\": \"email\",\n    \"key\": \"test@test.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/account/{{account}}/pix",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"{{account}}",
+						"pix"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transação da conta",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"description\": \"testing\",\n    \"value\": 10,\n    \"kind\": \"{{kind}}\",\n    \"key\": \"{{key}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/api/account/{{account}}/transaction",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"{{account}}",
+						"transaction"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Dados da conta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/account/{{account}}",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"account",
+						"{{account}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:7101",
+			"type": "string"
+		},
+		{
+			"key": "account",
+			"value": ""
+		},
+		{
+			"key": "account_from",
+			"value": ""
+		}
+	]
+}
