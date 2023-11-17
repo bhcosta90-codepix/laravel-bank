@@ -11,6 +11,7 @@ scripts:
     - kool run before-start
     - kool start
     - kool run composer install
+    - kool run artisan migrate
     - kool run artisan key:generate
   reset:
     - kool run composer install
