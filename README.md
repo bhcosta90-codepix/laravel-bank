@@ -16,5 +16,6 @@ Precisamos também do sistema central do banco, veja o projeto: `https://github.
 git clone git@github.com:bhcosta90-codepix/laravel-system.git
 cd laravel-system
 kool run setup
+sudo chmod 777 -R storage
 ```
     
